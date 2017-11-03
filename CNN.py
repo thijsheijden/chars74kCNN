@@ -143,7 +143,7 @@ elif result[0][25] == 1:
     
 training_set.class_indices
 # Saving the trained model
-chars74k_classifier.save('chars74K_model+weights.h5')
+chars74k_classifier.save('chars74K_model+weightsV2.0.h5')
 
 # Saving model as JSON
 model_json = chars74k_classifier.to_json()
