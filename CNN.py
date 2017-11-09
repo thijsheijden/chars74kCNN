@@ -11,7 +11,7 @@ from keras.layers import Dropout
 chars74k_classifier = Sequential()
 
 # Adding the first convolutional layer
-chars74k_classifier.add(Conv2D(32, (3, 3), activation = 'relu', input_shape = (64, 64, 3)))
+chars74k_classifier.add(Conv2D(32, (3, 3), activation = 'relu', input_shape = (299, 299, 3)))
 
 # Adding the max pooling layer
 chars74k_classifier.add(MaxPooling2D(pool_size = (2, 2)))
@@ -43,9 +43,9 @@ chars74k_classifier.add(Flatten())
 
 # Adding the fully connected layers (Normal ANN)
 chars74k_classifier.add(Dense(activation = 'relu', units = 128))
-chars74k_classifier.add(Dense(activation = 'relu', units = 4096))
-chars74k_classifier.add(Dropout(0.50))
-chars74k_classifier.add(Dense(activation = 'relu', units = 4096))
+chars74k_classifier.add(Dense(activation = 'relu', units = 512))
+chars74k_classifier.add(Dropout(0.25))
+chars74k_classifier.add(Dense(activation = 'relu', units = 512))
 chars74k_classifier.add(Dense(activation = 'relu', units = 128))
 chars74k_classifier.add(Dense(activation = 'softmax', units = 26))
 
@@ -66,18 +66,18 @@ train_datagen = ImageDataGenerator(
 test_datagen = ImageDataGenerator(rescale=1./255)
 
 training_set = train_datagen.flow_from_directory('dataset/training_set',
-                                                target_size=(64, 64),
+                                                target_size=(299, 299),
                                                 batch_size=32,
                                                 class_mode='categorical')
 
 test_set = test_datagen.flow_from_directory('dataset/test_set',
-                                                        target_size=(64, 64),
+                                                        target_size=(299, 299),
                                                         batch_size=32,
                                                         class_mode='categorical')
 
 history = chars74k_classifier.fit_generator(training_set,
                     steps_per_epoch=3860,
-                    epochs=5,
+                    epochs=25,
                     validation_data=test_set,
                     validation_steps=1342)
 
@@ -143,7 +143,7 @@ elif result[0][25] == 1:
     
 training_set.class_indices
 # Saving the trained model
-chars74k_classifier.save('chars74K_model+weightsV2.0.h5')
+chars74k_classifier.save('chars74kV3.0.h5')
 
 # Saving model as JSON
 model_json = chars74k_classifier.to_json()
