@@ -11,7 +11,7 @@ from keras.layers import Dropout
 chars74k_classifier = Sequential()
 
 # Adding the first convolutional layer
-chars74k_classifier.add(Conv2D(32, (3, 3), activation = 'relu', input_shape = (128, 128, 3)))
+chars74k_classifier.add(Conv2D(32, (3, 3), activation = 'relu', input_shape = (299, 299, 3)))
 
 # Adding the max pooling layer
 chars74k_classifier.add(MaxPooling2D(pool_size = (2, 2)))
@@ -62,12 +62,12 @@ train_datagen = ImageDataGenerator(
 test_datagen = ImageDataGenerator(rescale=1./255)
 
 training_set = train_datagen.flow_from_directory('dataset/training_set',
-                                                target_size=(128, 128),
+                                                target_size=(299, 299),
                                                 batch_size=32,
                                                 class_mode='categorical')
 
 test_set = test_datagen.flow_from_directory('dataset/test_set',
-                                                        target_size=(128, 128),
+                                                        target_size=(299, 299),
                                                         batch_size=32,
                                                         class_mode='categorical')
 
@@ -80,7 +80,7 @@ history = chars74k_classifier.fit_generator(training_set,
 # Making a single prediction
 import numpy as np
 from keras.preprocessing import image
-test_image = image.load_img('dataset/single_prediction/Z.jpg', target_size = (128, 128))
+test_image = image.load_img('dataset/single_prediction/Z.jpg', target_size = (299, 299))
 test_image = image.img_to_array(test_image)
 test_image = np.expand_dims(test_image, axis = 0)
 result = chars74k_classifier.predict(test_image)
